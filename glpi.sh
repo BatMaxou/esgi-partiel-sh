@@ -10,6 +10,9 @@ GLPI_DIR="$WEB_DIR/glpi"
 GLPI_APACHE_CONF_DIR="/etc/apache2/sites-available"
 GLPI_APACHE_CONF_FILE="$GLPI_APACHE_CONF_DIR/002-glpi.conf"
 
+SERVER_NAME="glpi"
+DOCUMENT_ROOT=$GLPI_DIR/public
+
 DB_NAME="glpi"
 DB_USER="glpi"
 DB_PASSWORD="glpi"
@@ -17,11 +20,20 @@ MYSQL_ROOT_USER="root"
 MYSQL_ROOT_PASSWORD="root"
 
 # PHP extensions (optionnal ? may be deleted i guess)
-apt install php-{gd,zip,curl,xml,mysql,mbstring,bcmath,intl,dom,fileinfo,simplexml,xmlreader,xmlwriter,bz2,phar,ldap,opcache} -y
+apt install \
+    php-bz2 \
+    php-intl \
+    php-gd \
+    php-mbstring \
+    php-mysql \
+    php-xml \
+    php-zip \
+    php-curl \
+    -y
 
 # Get GLPI archive
-mkdir -p $GLPI_DIR
 mv $GLPI_ARCHIVE $WEB_DIR
+cd $WEB_DIR
 tar -xzf $WEB_DIR/$GLPI_ARCHIVE
 chown -R www-data:www-data $GLPI_DIR
 
@@ -36,25 +48,35 @@ EOF
 # Apache
 cat > $GLPI_APACHE_CONF_FILE <<EOF
 <VirtualHost *:80>
-    ServerName glpi
+    ServerName $SERVER_NAME
     DocumentRoot $GLPI_DIR
 </VirtualHost>
-EOF>>
+EOF
 
 a2ensite 002-glpi.conf
+sleep 2
 systemctl reload apache2
 
-# Install
-cd $GLPI_DIR
+# Auto finish install
 
-php bin/console glpi:database:install \
-    --no-interaction \
-    --db-host=localhost \
-    --db-name=$DB_NAME \
-    --db-user=$DB_USER \
-    --db-password=$DB_PASSWORD
+# GET clean base to test importing it
 
-rm -rf $GLPI_DIR/install
+# cd $GLPI_DIR
+# cat > config/config_db.php <<EOF
+# <?php
+# class DB extends DBmysql {
+#    public \$dbhost = 'localhost';
+#    public \$dbuser = 'glpi';
+#    public \$dbpassword = 'glpi';
+#    public \$dbdefault = 'glpi';
+#    public \$use_utf8mb4 = true;
+#    public \$allow_myisam = false;
+#    public \$allow_datetime = false;
+#    public \$allow_signed_keys = false;
+# }
+# EOF
+# chown -R www-data:www-data config/config_db.php
+# chmod 755 config/config_db.php
 
 # Fancy stuff
 echo ""
@@ -69,13 +91,13 @@ echo "   Archive source:        $GLPI_ARCHIVE"
 echo "   Propriétaire fichiers: www-data:www-data"
 echo ""
 echo "🌐 ACCÈS WEB:"
-echo "   URL par nom serveur:   http://glpi/glpi"
+echo "   URL par nom serveur:   http://glpi"
 echo ""
 echo "🔧 CONFIGURATION APACHE:"
 echo "   Fichier de config:     $GLPI_APACHE_CONF_FILE"
 echo "   Site activé:           002-glpi.conf"
 echo "   DocumentRoot:          $GLPI_DIR"
-echo "   ServerName:            glpi"
+echo "   ServerName:            $SERVER_NAME"
 echo ""
 echo "🗄️  BASE DE DONNÉES:"
 echo "   Nom de la base:        $DB_NAME"
