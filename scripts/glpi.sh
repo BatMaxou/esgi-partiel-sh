@@ -48,8 +48,8 @@ EOF
 # Apache
 cat > $GLPI_APACHE_CONF_FILE <<EOF
 <VirtualHost *:80>
-    ServerName $SERVER_NAME
-    DocumentRoot $GLPI_DIR
+        ServerName $SERVER_NAME
+        DocumentRoot $GLPI_DIR
 </VirtualHost>
 EOF
 
