@@ -50,6 +50,7 @@ cat > $GLPI_APACHE_CONF_FILE <<EOF
 <VirtualHost *:80>
         ServerName $SERVER_NAME
         DocumentRoot $GLPI_DIR
+        Redirect / https://$SERVER_NAME/
 </VirtualHost>
 EOF
 
@@ -78,39 +79,8 @@ systemctl reload apache2
 # chown -R www-data:www-data config/config_db.php
 # chmod 755 config/config_db.php
 
-# Fancy stuff
 echo ""
 echo "============================================================"
 echo "                 INSTALLATION GLPI TERMINÉE"
 echo "============================================================"
 echo ""
-echo "📦 INFORMATIONS GÉNÉRALES:"
-echo "   Version GLPI:          10.0.18"
-echo "   Répertoire installation: $GLPI_DIR"
-echo "   Archive source:        $GLPI_ARCHIVE"
-echo "   Propriétaire fichiers: www-data:www-data"
-echo ""
-echo "🌐 ACCÈS WEB:"
-echo "   URL par nom serveur:   http://glpi"
-echo ""
-echo "🔧 CONFIGURATION APACHE:"
-echo "   Fichier de config:     $GLPI_APACHE_CONF_FILE"
-echo "   Site activé:           002-glpi.conf"
-echo "   DocumentRoot:          $GLPI_DIR"
-echo "   ServerName:            $SERVER_NAME"
-echo ""
-echo "🗄️  BASE DE DONNÉES:"
-echo "   Nom de la base:        $DB_NAME"
-echo "   Utilisateur GLPI:      $DB_USER"
-echo "   Mot de passe:          $DB_PASSWORD"
-echo ""
-echo "🚀 PROCHAINES ÉTAPES:"
-echo "   1. Connectez-vous avec le compte 'glpi'"
-echo "   2. Accédez à Configuration > Générale"
-echo "   3. Configurez votre organisation"
-echo "   4. Créez vos utilisateurs personnalisés"
-echo "   5. Supprimez les comptes par défaut non utilisés"
-echo ""
-echo "============================================================"
-echo "        Installation terminée avec succès ! 🎉"
-echo "============================================================"
