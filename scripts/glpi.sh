@@ -2,6 +2,7 @@
 
 set -e
 
+ARCHIVE_DIR="./archives"
 GLPI_ARCHIVE="glpi-10.0.18.tgz"
 
 WEB_DIR="/var/www"
@@ -32,7 +33,7 @@ apt install \
     -y
 
 # Get GLPI archive
-mv $GLPI_ARCHIVE $WEB_DIR
+mv $ARCHIVE_DIR/$GLPI_ARCHIVE $WEB_DIR
 cd $WEB_DIR
 tar -xzf $WEB_DIR/$GLPI_ARCHIVE
 chown -R www-data:www-data $GLPI_DIR

@@ -28,7 +28,7 @@ sed \
     -e "s|SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key|SSLCertificateKeyFile $SSL_DIR/$SOLUTION.key|" \
     -e "s|#SSLCACertificateFile /etc/apache2/ssl.crt/ca-bundle.crt|SSLCACertificateFile $CA_DIR/ca.crt|" \
     -e "s|#SSLVerifyClient|SSLVerifyClient|" \
-    -e "s|#SSLVerifyDepth 10|SSLVerifyDepth 2|" \
+    -e "s|#SSLVerifyDepth  10|SSLVerifyDepth  2|" \
     -i $SOLUTION_CONF
 
 systemctl reload apache2
