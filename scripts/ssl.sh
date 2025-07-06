@@ -8,16 +8,12 @@ CA_DIR="$SSL_DIR/ca"
 APACHE_SSL_CONF="/etc/apache2/sites-available/default-ssl.conf"
 SOLUTION_CONF="/etc/apache2/sites-available/002-$SOLUTION.conf"
 
-# Install Apache SSL package
-a2enmod ssl
-
 # Generate cert
 mkdir -p $SSL_DIR
 cd $SSL_DIR
 openssl genpkey -algorithm RSA -out $SOLUTION.key -pkeyopt rsa_keygen_bits:4096
 openssl req -x509 -new -nodes -key $SOLUTION.key -sha256 -days 90 -out $SOLUTION.pem -subj "/CN=$SOLUTION-CA"
 openssl x509 -in $SOLUTION.pem -inform PEM -out $SOLUTION.crt
-# openssl x509 -req -CA $CA_DIR/ca.crt -CAkey $CA_DIR/ca.key -in $SOLUTION.pem -out $SOLUTION.crt
 
 # Activate SSL for solution
 cat $APACHE_SSL_CONF >> $SOLUTION_CONF

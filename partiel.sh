@@ -1,5 +1,7 @@
 #!/bin/bash
 
+bash scripts/init.sh
+
 bash scripts/basic.sh partiel partiel
 
 bash scripts/glpi.sh

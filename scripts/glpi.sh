@@ -20,18 +20,6 @@ DB_PASSWORD="glpi"
 MYSQL_ROOT_USER="root"
 MYSQL_ROOT_PASSWORD="root"
 
-# PHP extensions (optionnal ? may be deleted i guess)
-apt install \
-    php-bz2 \
-    php-intl \
-    php-gd \
-    php-mbstring \
-    php-mysql \
-    php-xml \
-    php-zip \
-    php-curl \
-    -y
-
 # Get GLPI archive
 mv $ARCHIVE_DIR/$GLPI_ARCHIVE $WEB_DIR
 cd $WEB_DIR
@@ -40,7 +28,7 @@ chown -R www-data:www-data $GLPI_DIR
 
 # Database
 mysql -u root -p$MYSQL_ROOT_PASSWORD <<EOF
-CREATE DATABASE IF NOT EXISTS $DB_NAME;;
+CREATE DATABASE IF NOT EXISTS $DB_NAME;
 CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';
 GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
 FLUSH PRIVILEGES;
